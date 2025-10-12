@@ -4,37 +4,52 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
-    <title>Document</title>
+    <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+    <title>Goldcode Portfolio</title>
 </head>
 <body>
     <div class="container">
         <header class="navbar">
             <div class="logo">Gold<span>Code</span></div>
-            <nav>
+              <div class="menu-toggle" id="menu-toggle">
+                <i class="fas fa-bars"></i>
+            </div>
+            <nav id="nav-links">
                 <ul>
-                    <li><a href="" >Home</a></li>
-                    <li><a href="" >About</a></li>
-                    <li><a href="" >Project</a></li>
+                    <li><a href="#hero" class="active">Home</a></li>
+                    <li><a href="#project">Project</a></li>
+                    <li><a href="#contact">Contact</a></li>
                 </ul>
             </nav>
-            <button class="btn">Contact</button>
+            
         </header>
-        <section id="hero" class="hero">
+        <section id="hero"  class="hero fade-in from-left">
             <div class="hero-details">
                 <h3>Hi</h3>
-                <h2>I'm <span class="highlight">Emmanuel</span> <br>a Full-Stack Web Developer</h2>
-                <p class="description">A passionate Full-Stack Developer who loves blending design and functionality 
+                <h2>I'm <span class="highlight">Emmanuel</span> <br>A Full-Stack Web Developer</h2>
+                <p class="description">I'm passionate Full-Stack Developer who loves blending design and functionality 
                         to build intuitive, modern web experiences. I enjoy transforming ideas into 
                         clean, efficient, and scalable code.I specialize in building modern, responsive, and scalable web applications using
                          HTML, CSS, JavaScript, React, Node.js, and MongoDB.</p>
                         <a href="#projects" class="btn">View my work</a>
+
+                        <div class="social-links">
+                            <a href="https://github.com/emmatimi" target="_blank"><i class="fab fa-github"></i></a>
+                            <a href="https://linkedin.com/emmatimi" target="_blank"><i class="fab fa-linkedin"></i></a>
+                            <a href="https://twitter.com/emmatimi" target="_blank"><i class="fab fa-twitter"></i></a>
+                            <a href="https://facebook.com/emmatimi" target="_blank"><i class="fab fa-facebook"></i></a>
+                            <a href="https://wa.me/2347085701383" target="_blank"><i class="fa-brands fa-whatsapp"></i></a>
+                        </div>
             </div>
-            <div class="hero-image">
+            <div class="hero-image fade-in from-right">
                 <img src="./Images/hero-image.png" alt="Image">
             </div>
         </section>
 
-        <section id="project" class="project">
+        <section id="project" class="project fade-in from-bottom">
             <h2>My Project </h2>
             <hr class="title-line">
                 <div class="project-grid">
@@ -64,6 +79,152 @@
                     </div>
                 </div>
         </section>
+        <section id="contact" class="contact  fade-in from-right">
+            <h2>Contact Me</h2>
+            <hr class="title-line">
+            <p>Feel free to get in touch with me, i'm alway available to new  innovations,oppotunities and collaboration.</p>
+            <form>
+            <input type="text" class="name" placeholder="Your Name" required>
+             <textarea class="message" placeholder="Your Message" required></textarea>
+            <input type="email" class="email" placeholder="Your email" required>
+             <button class="submit">send Message</button>
+            </form>
+           
+        </section>
+        
+  <footer>
+    <p>© <span id="year"></span> Goldcode. All rights reserved.</p>
+  </footer>
     </div>
+
+
+    <script>
+            const titles = document.querySelectorAll('.project h2, .contact h2');
+            const cards = document.querySelectorAll('.project-card');
+            const form = document.querySelector('form');
+            const faders = document.querySelectorAll('.fade-in');
+
+            const appearOptions = {
+            threshold: 0.2,
+            };
+            document.getElementById("year").textContent = new Date().getFullYear();
+
+
+            const appearOnScroll = new IntersectionObserver(function(entries, observer) {
+            entries.forEach(entry => {
+            if (!entry.isIntersecting) return;
+
+            const elements = entry.target.querySelectorAll('*');
+            elements.forEach((el, index) => {
+            el.style.transitionDelay = `${index * 100}ms`; // 100ms gap per element
+            });
+
+            entry.target.classList.add('show');
+            observer.unobserve(entry.target);
+            });
+            }, appearOptions);
+
+            faders.forEach(fader => {
+            appearOnScroll.observe(fader);
+            });
+
+
+            window.addEventListener('scroll', () => {
+            titles.forEach(title => {
+                const rect = title.getBoundingClientRect();
+                if (rect.top < window.innerHeight - 100) {
+                title.classList.add('show-title');
+                }
+            });
+
+            cards.forEach(card => {
+                const rect = card.getBoundingClientRect();
+                if (rect.top < window.innerHeight - 100) {
+                card.classList.add('show-card');
+                }
+            });
+
+            const formRect = form.getBoundingClientRect();
+            if (formRect.top < window.innerHeight - 100) {
+                form.classList.add('show-form');
+            }
+            });
+            
+            const menuToggle = document.getElementById("menu-toggle");
+            const navLinks = document.getElementById("nav-links");
+            let overlay = document.createElement("div");
+            overlay.classList.add("overlay");
+            document.body.appendChild(overlay);
+
+            // Toggle menu open/close
+            menuToggle.addEventListener("click", () => {
+                navLinks.classList.toggle("active");
+                overlay.classList.toggle("active");
+                document.body.classList.toggle("menu-open");
+
+                const icon = menuToggle.querySelector("i");
+                icon.classList.toggle("fa-bars");
+                icon.classList.toggle("fa-xmark");
+            });
+
+            // Close menu when clicking a link
+            document.querySelectorAll("nav a").forEach(link => {
+                link.addEventListener("click", () => {
+                navLinks.classList.remove("active");
+                overlay.classList.remove("active");
+                document.body.classList.remove("menu-open");
+
+                const icon = menuToggle.querySelector("i");
+                icon.classList.add("fa-bars");
+                icon.classList.remove("fa-xmark");
+                });
+            });
+
+            // Close menu when clicking outside
+            overlay.addEventListener("click", () => {
+                navLinks.classList.remove("active");
+                overlay.classList.remove("active");
+                document.body.classList.remove("menu-open");
+
+                const icon = menuToggle.querySelector("i");
+                icon.classList.add("fa-bars");
+                icon.classList.remove("fa-xmark");
+            });
+               const navItems = document.querySelectorAll("nav a");
+            navItems.forEach(link => {
+            link.addEventListener("click", () => {
+                navItems.forEach(item => item.classList.remove("active"));
+                link.classList.add("active");
+                navLinks.classList.remove("active");
+                overlay.classList.remove("active");
+                document.body.classList.remove("menu-open");
+
+                const icon = menuToggle.querySelector("i");
+                icon.classList.add("fa-bars");
+                icon.classList.remove("fa-xmark");
+            });
+            });
+            // ===== Active Link on Scroll =====
+            const sections = document.querySelectorAll("section");
+            window.addEventListener("scroll", () => {
+            let current = "";
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (scrollY >= sectionTop - sectionHeight / 3) {
+                current = section.getAttribute("id");
+                }
+            });
+
+            navItems.forEach(link => {
+                link.classList.remove("active");
+                if (link.getAttribute("href") === `#${current}`) {
+                link.classList.add("active");
+                }
+            });
+            })
+            </script>
+
+
 </body>
 </html>
