@@ -136,8 +136,22 @@ body {
   color: var(--accent-color);
 }
 
-.hero .highlight {
+.hero .loader::after {
+  content:"";
   color: var(--main-color);
+  animation-name: animatingtext;
+  animation-duration: 4000ms;
+  animation-iteration-count: infinite;
+}
+@keyframes animatingtext{
+  0%{ content: "E";}
+  10%{ content: "Em";}
+  20%{ content: "Emm";}
+  30%{ content:"Emma";}
+  40%{ content: "Emman";}
+  50%{ content: "Emmanu";}
+  60%{ content: "Emmanue";}
+  70%{ content: "Emmanuel";}
 }
 
 .hero-image {
@@ -512,3 +526,4 @@ footer {
     width: 100%;
   }
 }
+
